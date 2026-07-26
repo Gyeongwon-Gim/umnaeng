@@ -42,6 +42,13 @@ export default function ListScreen() {
     [items, filter],
   );
 
+  // 위치별 전체 재고 수 (만료 여부 무관, 필터 버튼 표시용)
+  const locationCounts = useMemo(() => {
+    const counts: Record<StorageLocation, number> = { fridge: 0, freezer: 0 };
+    for (const it of items) counts[it.location]++;
+    return counts;
+  }, [items]);
+
   // 만료 섹션 분리 (FR-3.4)
   const sections = useMemo(() => {
     const sorted = sortItems(filtered);
@@ -49,7 +56,7 @@ export default function ListScreen() {
     const active = sorted.filter((it) => remainingDays(it) >= 0);
     const out: { title: string; data: FridgeItem[] }[] = [];
     if (expired.length) out.push({ title: `만료 · ${expired.length}`, data: expired });
-    if (active.length) out.push({ title: `보관 중 · ${active.length}`, data: active });
+    if (active.length) out.push({ title: "", data: active });
     return out;
   }, [filtered]);
 
@@ -63,7 +70,7 @@ export default function ListScreen() {
 
   return (
     <View style={styles.container}>
-      <FilterBar filter={filter} onChange={setFilter} />
+      <FilterBar filter={filter} onChange={setFilter} counts={locationCounts} />
 
       {sections.length === 0 ? (
         <Empty />
@@ -79,9 +86,9 @@ export default function ListScreen() {
               onPress={(id) => router.push({ pathname: "/edit/[id]", params: { id } })}
             />
           )}
-          renderSectionHeader={({ section }) => (
-            <Text style={styles.sectionHeader}>{section.title}</Text>
-          )}
+          renderSectionHeader={({ section }) =>
+            section.title ? <Text style={styles.sectionHeader}>{section.title}</Text> : null
+          }
           ItemSeparatorComponent={() => <View style={styles.sep} />}
           contentContainerStyle={{ paddingBottom: 120 }}
         />
@@ -109,22 +116,36 @@ export default function ListScreen() {
   );
 }
 
-function FilterBar({ filter, onChange }: { filter: Filter; onChange: (f: Filter) => void }) {
-  const tabs: { key: Filter; label: string }[] = [
-    { key: "fridge", label: "냉장" },
-    { key: "freezer", label: "냉동" },
+function FilterBar({
+  filter,
+  onChange,
+  counts,
+}: {
+  filter: Filter;
+  onChange: (f: Filter) => void;
+  counts: Record<Filter, number>;
+}) {
+  const tabs: { key: Filter; label: string; count: number }[] = [
+    { key: "fridge", label: "냉장", count: counts.fridge },
+    { key: "freezer", label: "냉동", count: counts.freezer },
   ];
   return (
     <View style={styles.filterBar}>
-      {tabs.map((t) => (
-        <Pressable
-          key={t.key}
-          style={[styles.tab, filter === t.key && styles.tabActive]}
-          onPress={() => onChange(t.key)}
-        >
-          <Text style={[styles.tabText, filter === t.key && styles.tabTextActive]}>{t.label}</Text>
-        </Pressable>
-      ))}
+      {tabs.map((t) => {
+        const active = filter === t.key;
+        return (
+          <Pressable
+            key={t.key}
+            style={[styles.tab, active && styles.tabActive]}
+            onPress={() => onChange(t.key)}
+          >
+            <Text style={[styles.tabText, active && styles.tabTextActive]}>{t.label}</Text>
+            <View style={[styles.countBadge, active && styles.countBadgeActive]}>
+              <Text style={[styles.countText, active && styles.countTextActive]}>{t.count}</Text>
+            </View>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }
@@ -141,11 +162,22 @@ function Empty() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#FAFAFA" },
-  filterBar: { flexDirection: "row", padding: 12, gap: 8, backgroundColor: "#F1F8E9" },
-  tab: { paddingVertical: 6, paddingHorizontal: 16, borderRadius: 16, backgroundColor: "#fff" },
-  tabActive: { backgroundColor: "#2E7D32" },
+  filterBar: { flexDirection: "row", padding: 12, gap: 8, backgroundColor: "#fff" },
+  tab: {
+    flexDirection: "row", alignItems: "center", gap: 6,
+    paddingVertical: 6, paddingHorizontal: 14, borderRadius: 16,
+    backgroundColor: "#fff", borderWidth: 1, borderColor: "#E0E0E0",
+  },
+  tabActive: { backgroundColor: "#2E7D32", borderColor: "#2E7D32" },
   tabText: { color: "#555", fontWeight: "600" },
   tabTextActive: { color: "#fff" },
+  countBadge: {
+    minWidth: 20, height: 20, borderRadius: 10, paddingHorizontal: 4,
+    alignItems: "center", justifyContent: "center", backgroundColor: "#E8F5E9",
+  },
+  countBadgeActive: { backgroundColor: "rgba(255,255,255,0.25)" },
+  countText: { fontSize: 12, fontWeight: "700", color: "#2E7D32" },
+  countTextActive: { color: "#fff" },
   sectionHeader: {
     paddingHorizontal: 16, paddingVertical: 6, backgroundColor: "#FAFAFA",
     color: "#9E9E9E", fontSize: 12, fontWeight: "700",
