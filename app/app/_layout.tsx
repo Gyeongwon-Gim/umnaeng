@@ -17,7 +17,7 @@ export default function RootLayout() {
               headerTitleStyle: { fontWeight: "700" },
             }}
           >
-            <Stack.Screen name="index" options={{ title: "냉장고 지킴이" }} />
+            <Stack.Screen name="index" options={{ title: "엄냉관" }} />
             <Stack.Screen name="add" options={{ title: "사진으로 등록", presentation: "modal" }} />
           </Stack>
         </StoreProvider>

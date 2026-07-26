@@ -49,7 +49,7 @@ export async function scheduleDailyImminentNotice(
 
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: "냉장고 지킴이",
+      title: "엄냉관",
       body, // FR-5.2: 묶음 발송
       data: { screen: "list" }, // 탭 시 리스트 진입 (FR-5.4)
     },

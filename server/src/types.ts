@@ -1,4 +1,4 @@
-// 냉장고 지킴이 서버 공용 타입
+// 엄냉관 서버 공용 타입
 
 /** 음식 분류 (PRD FR-1.2) */
 export type FoodCategory = "ingredient" | "sidedish" | "product";

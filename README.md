@@ -1,4 +1,4 @@
-# 냉장고 지킴이 (Olive Fresh)
+# 엄냉관 (엄격한 냉장고 관리자)
 
 사진 한 장으로 등록이 끝나는 생성형 AI 기반 냉장고 관리 앱.
 Vision LLM(Claude)이 사진 속 음식을 인식하고 보관기한을 자동 산정하며,
@@ -6,7 +6,7 @@ Vision LLM(Claude)이 사진 속 음식을 인식하고 보관기한을 자동 �
 
 > **핵심 가치: "등록 3초, 관리 스와이프 1번."**
 
-PRD: [`olive_fresh_PRD.md`](./olive_fresh_PRD.md)
+PRD: [`umnaeng_PRD.md`](./docs/umnaeng_PRD.md)
 
 ## 구조 (monorepo)
 

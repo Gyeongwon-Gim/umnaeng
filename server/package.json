@@ -1,8 +1,8 @@
 {
-  "name": "olive-fresh-server",
+  "name": "umnaeng-server",
   "version": "0.1.0",
   "private": true,
-  "description": "냉장고 지킴이 BFF — Claude Vision 인식 + 보관기한 산정",
+  "description": "엄냉관 BFF — Claude Vision 인식 + 보관기한 산정",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",

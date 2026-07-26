@@ -1,4 +1,4 @@
-// 냉장고 지킴이 BFF 엔트리포인트
+// 엄냉관 BFF 엔트리포인트
 
 import "dotenv/config";
 import express from "express";
@@ -41,7 +41,7 @@ app.post("/recognize", async (req, res) => {
 
 const PORT = Number(process.env.PORT) || 8787;
 app.listen(PORT, () => {
-  console.log(`🥬 냉장고 지킴이 서버 실행 중 → http://localhost:${PORT}`);
+  console.log(`🥬 엄냉관 서버 실행 중 → http://localhost:${PORT}`);
   if (!process.env.ANTHROPIC_API_KEY) {
     console.warn("⚠️  ANTHROPIC_API_KEY 미설정 — /recognize 호출이 실패합니다. .env를 확인하세요.");
   }
