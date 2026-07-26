@@ -23,6 +23,7 @@ interface Props {
   item: FridgeItem;
   onConsume: (id: string) => void; // 좌측 스와이프
   onFreeze: (id: string) => void; // 우측 스와이프 (냉장→냉동)
+  onPress?: (id: string) => void; // 탭 → 수정 화면
 }
 
 const LOCATION_LABEL = { fridge: "냉장", freezer: "냉동" } as const;
@@ -32,7 +33,7 @@ const CATEGORY_LABEL = {
   product: "완제품",
 } as const;
 
-export function SwipeableRow({ item, onConsume, onFreeze }: Props) {
+export function SwipeableRow({ item, onConsume, onFreeze, onPress }: Props) {
   const ref = useRef<Swipeable>(null);
   const fresh = freshnessOf(item);
   const color = FRESHNESS_COLOR[fresh];
@@ -92,6 +93,7 @@ export function SwipeableRow({ item, onConsume, onFreeze }: Props) {
     >
       <RectButton
         style={[styles.row, { backgroundColor: FRESHNESS_BG[fresh] }]}
+        onPress={() => onPress?.(item.id)}
         onLongPress={longPressMenu}
       >
         {/* 임박도 색상 바 (텍스트 D-n과 병기, 색각 접근성) */}

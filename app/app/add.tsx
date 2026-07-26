@@ -9,7 +9,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -18,6 +17,7 @@ import { recognizeImage } from "../src/api";
 import { useStore } from "../src/store";
 import { todayISO } from "../src/freshness";
 import { addDaysISO } from "../src/rules";
+import { ItemEditor } from "../components/ItemEditor";
 import type { ItemProposal } from "../src/types";
 
 type Phase = "pick" | "loading" | "confirm";
@@ -131,31 +131,9 @@ function ProposalCard({
   onChange: (next: ItemProposal) => void;
   onRemove: () => void;
 }) {
-  const toggleLocation = () => {
-    const location = value.location === "fridge" ? "freezer" : "fridge";
-    onChange({ ...value, location });
-  };
   return (
     <View style={styles.card}>
-      <View style={styles.cardTop}>
-        <TextInput
-          style={styles.nameInput}
-          value={value.name}
-          placeholder="품목명"
-          onChangeText={(name) => onChange({ ...value, name })}
-        />
-        <Pressable onPress={onRemove}>
-          <Text style={styles.remove}>✕</Text>
-        </Pressable>
-      </View>
-      <View style={styles.cardRow}>
-        <Pressable style={styles.chip} onPress={toggleLocation}>
-          <Text style={styles.chipText}>{value.location === "freezer" ? "냉동" : "냉장"}</Text>
-        </Pressable>
-        <View style={styles.chip}>
-          <Text style={styles.chipText}>~{value.expiresAt} (D-{value.shelfLifeDays})</Text>
-        </View>
-      </View>
+      <ItemEditor value={value} onChange={onChange} onRemove={onRemove} />
       <Text style={styles.rationale}>{value.rationale}</Text>
     </View>
   );
@@ -196,12 +174,6 @@ const styles = StyleSheet.create({
   errorBox: { backgroundColor: "#FFEBEE", color: "#C62828", padding: 12, borderRadius: 10, marginBottom: 12 },
   hintBox: { backgroundColor: "#FFF8E1", color: "#F57F17", padding: 12, borderRadius: 10, marginBottom: 12 },
   card: { backgroundColor: "#fff", borderRadius: 14, padding: 14, marginBottom: 12 },
-  cardTop: { flexDirection: "row", alignItems: "center" },
-  nameInput: { flex: 1, fontSize: 17, fontWeight: "600", color: "#212121", paddingVertical: 4 },
-  remove: { fontSize: 18, color: "#BDBDBD", paddingHorizontal: 8 },
-  cardRow: { flexDirection: "row", gap: 8, marginTop: 8 },
-  chip: { backgroundColor: "#F1F8E9", paddingVertical: 6, paddingHorizontal: 12, borderRadius: 14 },
-  chipText: { color: "#2E7D32", fontSize: 13, fontWeight: "600" },
   rationale: { marginTop: 8, fontSize: 12, color: "#9E9E9E" },
   addRow: { padding: 14, alignItems: "center", borderRadius: 12, borderWidth: 1, borderColor: "#C8E6C9", borderStyle: "dashed", marginBottom: 20 },
   addRowText: { color: "#2E7D32", fontWeight: "600" },

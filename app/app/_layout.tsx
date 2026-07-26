@@ -19,6 +19,7 @@ export default function RootLayout() {
           >
             <Stack.Screen name="index" options={{ title: "엄냉관" }} />
             <Stack.Screen name="add" options={{ title: "사진으로 등록", presentation: "modal" }} />
+            <Stack.Screen name="edit/[id]" options={{ title: "항목 수정", presentation: "modal" }} />
           </Stack>
         </StoreProvider>
       </SafeAreaProvider>

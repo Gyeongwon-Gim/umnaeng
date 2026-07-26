@@ -72,7 +72,12 @@ export default function ListScreen() {
           sections={sections}
           keyExtractor={(it) => it.id}
           renderItem={({ item }) => (
-            <SwipeableRow item={item} onConsume={handleConsume} onFreeze={moveToFreezer} />
+            <SwipeableRow
+              item={item}
+              onConsume={handleConsume}
+              onFreeze={moveToFreezer}
+              onPress={(id) => router.push({ pathname: "/edit/[id]", params: { id } })}
+            />
           )}
           renderSectionHeader={({ section }) => (
             <Text style={styles.sectionHeader}>{section.title}</Text>
