@@ -19,13 +19,13 @@ import {
 } from "../src/notifications";
 import type { FridgeItem, StorageLocation } from "../src/types";
 
-type Filter = "all" | StorageLocation;
+type Filter = StorageLocation;
 
 export default function ListScreen() {
   const { items, consume, moveToFreezer, loading } = useStore();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const [filter, setFilter] = useState<Filter>("all");
+  const [filter, setFilter] = useState<Filter>("fridge");
   const [undo, setUndo] = useState<{ label: string; restore: () => void } | null>(null);
 
   // 앱 진입 시 알림 권한 + 임박 알림 재예약 (FR-5)
@@ -38,7 +38,7 @@ export default function ListScreen() {
   }, [loading, items]);
 
   const filtered = useMemo(
-    () => items.filter((it) => (filter === "all" ? true : it.location === filter)),
+    () => items.filter((it) => it.location === filter),
     [items, filter],
   );
 
@@ -106,7 +106,6 @@ export default function ListScreen() {
 
 function FilterBar({ filter, onChange }: { filter: Filter; onChange: (f: Filter) => void }) {
   const tabs: { key: Filter; label: string }[] = [
-    { key: "all", label: "전체" },
     { key: "fridge", label: "냉장" },
     { key: "freezer", label: "냉동" },
   ];
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16, paddingVertical: 6, backgroundColor: "#FAFAFA",
     color: "#9E9E9E", fontSize: 12, fontWeight: "700",
   },
-  sep: { height: 1, backgroundColor: "#EEE", marginLeft: 76 },
+  sep: { height: 1, backgroundColor: "#EEE", marginLeft: 118 },
   empty: { flex: 1, alignItems: "center", justifyContent: "center", padding: 40 },
   emptyEmoji: { fontSize: 48, marginBottom: 12 },
   emptyTitle: { fontSize: 18, fontWeight: "700", color: "#424242" },

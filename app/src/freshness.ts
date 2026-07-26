@@ -60,6 +60,14 @@ export const FRESHNESS_COLOR: Record<Freshness, string> = {
   expired: "#616161",
 };
 
+/** 행 배경용 연한 톤 (FRESHNESS_COLOR와 짝을 이루는 MD 50번대 색) */
+export const FRESHNESS_BG: Record<Freshness, string> = {
+  green: "#E8F5E9",
+  yellow: "#FFF8E1",
+  red: "#FFEBEE",
+  expired: "#EEEEEE",
+};
+
 export const FRESHNESS_LABEL: Record<Freshness, string> = {
   green: "여유",
   yellow: "주의",

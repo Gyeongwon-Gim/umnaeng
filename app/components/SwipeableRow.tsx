@@ -14,6 +14,7 @@ import type { FridgeItem } from "../src/types";
 import {
   dLabel,
   freshnessOf,
+  FRESHNESS_BG,
   FRESHNESS_COLOR,
   FRESHNESS_LABEL,
 } from "../src/freshness";
@@ -75,7 +76,7 @@ export function SwipeableRow({ item, onConsume, onFreeze }: Props) {
   const renderRightActions = () =>
     isFreezer ? null : (
       <RectButton style={[styles.action, styles.freeze]} onPress={doFreeze}>
-        <Text style={styles.actionText}>냉동</Text>
+        <Text style={[styles.actionText, styles.freezeActionText]}>{"냉동실로\ntoss"}</Text>
       </RectButton>
     );
 
@@ -89,7 +90,10 @@ export function SwipeableRow({ item, onConsume, onFreeze }: Props) {
         else doFreeze();
       }}
     >
-      <RectButton style={styles.row} onLongPress={longPressMenu}>
+      <RectButton
+        style={[styles.row, { backgroundColor: FRESHNESS_BG[fresh] }]}
+        onLongPress={longPressMenu}
+      >
         {/* 임박도 색상 바 (텍스트 D-n과 병기, 색각 접근성) */}
         <View style={[styles.bar, { backgroundColor: color }]} />
         {item.thumbnailUri ? (
@@ -119,22 +123,22 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    paddingVertical: 12,
+    paddingVertical: 32,
     paddingRight: 16,
   },
-  bar: { width: 6, height: "100%", borderRadius: 3, marginRight: 10 },
-  thumb: { width: 48, height: 48, borderRadius: 10, marginRight: 12 },
+  bar: { width: 8, height: "100%", borderRadius: 4, marginRight: 14 },
+  thumb: { width: 80, height: 80, borderRadius: 16, marginRight: 16 },
   thumbPlaceholder: { backgroundColor: "#F1F8E9", alignItems: "center", justifyContent: "center" },
-  thumbEmoji: { fontSize: 22 },
+  thumbEmoji: { fontSize: 32 },
   body: { flex: 1 },
-  name: { fontSize: 16, fontWeight: "600", color: "#212121" },
-  meta: { fontSize: 13, color: "#757575", marginTop: 2 },
-  right: { alignItems: "flex-end", minWidth: 56 },
-  dday: { fontSize: 16, fontWeight: "700" },
-  badge: { fontSize: 12, marginTop: 2, fontWeight: "600" },
+  name: { fontSize: 19, fontWeight: "600", color: "#212121" },
+  meta: { fontSize: 14, color: "#757575", marginTop: 4 },
+  right: { alignItems: "flex-end", minWidth: 64 },
+  dday: { fontSize: 20, fontWeight: "700" },
+  badge: { fontSize: 13, marginTop: 4, fontWeight: "600" },
   action: { justifyContent: "center", alignItems: "center", width: 80 },
   consume: { backgroundColor: "#43A047" },
-  freeze: { backgroundColor: "#1E88E5" },
+  freeze: { backgroundColor: "#1E88E5", width: 112 },
   actionText: { color: "#fff", fontWeight: "700", fontSize: 15 },
+  freezeActionText: { fontSize: 13, textAlign: "center" },
 });
