@@ -1,7 +1,5 @@
 # 엄냉관 (엄격한 냉장고 관리자)
-<div align="center">
-  <img width="300" height="300" align="center" alt="image" src="./docs/assets/app_preview.png" />
-</div>
+![image](./docs/assets/app_preview.png)
 
 사진 한 장으로 등록이 끝나는 생성형 AI 기반 냉장고 관리 앱.
 Vision LLM(Claude)이 사진 속 음식을 인식하고 보관기한을 자동 산정하며,
