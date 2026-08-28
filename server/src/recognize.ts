@@ -17,6 +17,27 @@ const MODEL = process.env.VISION_MODEL || "claude-opus-4-8";
 
 const client = new Anthropic(); // ANTHROPIC_API_KEY 환경변수 사용
 
+// 비용 추적용 대략적 단가 (USD / 1M 토큰). 실제 청구액과 다를 수 있음 — 참고용.
+const PRICING_PER_MTOK: Record<string, { input: number; output: number }> = {
+  "claude-opus-4-8": { input: 5, output: 25 },
+  "claude-opus-4-7": { input: 5, output: 25 },
+  "claude-opus-4-6": { input: 5, output: 25 },
+  "claude-opus-5": { input: 5, output: 25 },
+  "claude-sonnet-5": { input: 3, output: 15 },
+  "claude-sonnet-4-6": { input: 3, output: 15 },
+  "claude-haiku-4-5": { input: 1, output: 5 },
+};
+
+function logUsage(usage: Anthropic.Messages.Usage): void {
+  const pricing = PRICING_PER_MTOK[MODEL];
+  const cost = pricing
+    ? `$${((usage.input_tokens * pricing.input + usage.output_tokens * pricing.output) / 1_000_000).toFixed(4)}`
+    : "단가 미등록";
+  console.log(
+    `[/recognize] usage model=${MODEL} input=${usage.input_tokens} output=${usage.output_tokens} cost≈${cost}`,
+  );
+}
+
 /** 신뢰도 임계값 미만이면 폴백 (FR-1.5) */
 const CONFIDENCE_THRESHOLD = 0.5;
 
@@ -107,6 +128,8 @@ export async function recognize(input: RecognizeInput): Promise<RecognizeRespons
       },
     ],
   });
+
+  logUsage(message.usage);
 
   // structured outputs → 첫 text 블록이 유효 JSON
   const text = message.content.find((b) => b.type === "text");

@@ -9,9 +9,8 @@ node_modules/
 
 # build
 server/dist/
-app/.expo/
-app/dist/
-app/web-build/
+web/dist/
+web/tsconfig.tsbuildinfo
 
 # misc
 .DS_Store

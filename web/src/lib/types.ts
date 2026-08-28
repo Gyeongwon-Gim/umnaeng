@@ -1,7 +1,7 @@
 // 앱 공용 타입 (서버 types.ts와 개념 일치)
 
 export type FoodCategory = "ingredient" | "sidedish" | "product";
-export type StorageLocation = "fridge" | "freezer";
+export type StorageLocation = "fridge" | "freezer" | "kimchi";
 export type CookState = "raw" | "cooked";
 
 export type FoodKind =
